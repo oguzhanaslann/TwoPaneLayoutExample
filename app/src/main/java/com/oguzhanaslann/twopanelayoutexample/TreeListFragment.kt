@@ -1,14 +1,16 @@
 package com.oguzhanaslann.twopanelayoutexample
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import coil.load
 import com.oguzhanaslann.twopanelayoutexample.databinding.FragmentTreeListBinding
 import com.oguzhanaslann.twopanelayoutexample.databinding.ItemTreeBinding
@@ -18,10 +20,17 @@ class TreeListFragment : Fragment(R.layout.fragment_tree_list) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentTreeListBinding.bind(view)
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            SportsListOnBackPressedCallback(binding.slidingPane)
+        )
+
         binding.apply {
             treeRv.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = TreeAdapter().also {
+                adapter = TreeAdapter {
+                    slidingPane.openPane()
+                }.also {
                     it.submitList(
                         listOf(
                             Tree(
@@ -49,9 +58,12 @@ class TreeListFragment : Fragment(R.layout.fragment_tree_list) {
 }
 
 
+
 data class Tree(val name: String, val description: String, val image: String)
 
-class TreeAdapter : ListAdapter<Tree, TreeAdapter.Holder>(DiffCallBack()) {
+class TreeAdapter(
+    private inline var onClick: (Tree) -> Unit = {}
+) : ListAdapter<Tree, TreeAdapter.Holder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemTreeBinding.inflate(
@@ -70,6 +82,9 @@ class TreeAdapter : ListAdapter<Tree, TreeAdapter.Holder>(DiffCallBack()) {
 
     inner class Holder(val binding: ItemTreeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(currentItem: Tree) = binding.run {
+            cardView.setOnClickListener {
+                onClick(currentItem)
+            }
             treeNameTextView.text = currentItem.name
             treeImage.load(currentItem.image)
         }
@@ -81,5 +96,37 @@ class TreeAdapter : ListAdapter<Tree, TreeAdapter.Holder>(DiffCallBack()) {
             oldItem.name == newItem.name
 
         override fun areContentsTheSame(oldItem: Tree, newItem: Tree): Boolean = oldItem == newItem
+    }
+}
+
+
+class SportsListOnBackPressedCallback(
+    private val slidingPaneLayout: SlidingPaneLayout
+) : OnBackPressedCallback(
+    // Set the default 'enabled' state to true only if it is slidable (i.e., the panes
+    // are overlapping) and open (i.e., the detail pane is visible).
+    slidingPaneLayout.isSlideable && slidingPaneLayout.isOpen
+), SlidingPaneLayout.PanelSlideListener {
+
+    init {
+        slidingPaneLayout.addPanelSlideListener(this)
+    }
+
+    override fun handleOnBackPressed() {
+        // Return to the list pane when the system back button is pressed.
+        slidingPaneLayout.closePane()
+    }
+
+    override fun onPanelSlide(panel: View, slideOffset: Float) = Unit
+
+    override fun onPanelOpened(panel: View) {
+        // Intercept the system back button when the detail pane becomes visible.
+        isEnabled = true
+    }
+
+    override fun onPanelClosed(panel: View) {
+        // Disable intercepting the system back button when the user returns to the
+        // list pane.
+        isEnabled = false
     }
 }
