@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.AbstractListDetailFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oguzhanaslann.twopanelayoutexample.databinding.FragmentTreeListBinding
 
@@ -22,6 +21,11 @@ class TwoPaneFragment : AbstractListDetailFragment() {
     override fun onListPaneViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onListPaneViewCreated(view, savedInstanceState)
         val binding = FragmentTreeListBinding.bind(view)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            SportsListOnBackPressedCallback(binding.slidingPane)
+        )
 
         binding.apply {
             treeRv.apply {
