@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/two_pane_navigation.xml"
+    app:startDestination="@id/treeListFragment">
+
+    <fragment
+        android:id="@+id/treeListFragment"
+        android:name="com.oguzhanaslann.twopanelayoutexample.TreeListFragment"
+        android:label="fragment_tree_list"
+        tools:layout="@layout/fragment_tree_list" >
+        <action
+            android:id="@+id/action_treeListFragment_to_treeDetailFragment"
+            app:destination="@id/treeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/treeDetailFragment"
+        android:name="com.oguzhanaslann.twopanelayoutexample.TreeDetailFragment"
+        android:label="fragment_tree_detail"
+        tools:layout="@layout/fragment_tree_detail" />
+</navigation>
