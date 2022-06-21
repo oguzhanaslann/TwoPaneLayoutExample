@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.AbstractListDetailFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +35,7 @@ class TwoPaneFragment : AbstractListDetailFragment() {
                     val detailNavController = detailPaneNavHostFragment.navController
                     detailNavController.navigate(
                         R.id.treeDetailFragment,
-                        null,
+                        bundleOf("name" to it.name),
                         NavOptions.Builder()
                             .setPopUpTo(detailNavController.graph.startDestinationId, true)
                             .build()
@@ -42,29 +43,29 @@ class TwoPaneFragment : AbstractListDetailFragment() {
 
                     slidingPaneLayout.open()
                 }.also {
-                    it.submitList(
-                        listOf(
-                            Tree(
-                                name = "Oak",
-                                description = "A tree that is native to the American West",
-                                image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-                            ),
-                            Tree(
-                                name = "Pine",
-                                description = "A tree that is native to the American West",
-                                image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-                            ),
-                            Tree(
-                                name = "Cherry",
-                                description = "A tree that is native to the American West",
-                                image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-
-                            ),
-                        )
-                    )
+                    it.submitList(trees)
                 }
             }
         }
     }
 
 }
+
+val trees = listOf(
+    Tree(
+        name = "Oak",
+        description = "A tree that is native to the American West",
+        image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+    ),
+    Tree(
+        name = "Pine",
+        description = "A tree that is native to the American West",
+        image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+    ),
+    Tree(
+        name = "Cherry",
+        description = "A tree that is native to the American West",
+        image = "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+
+    ),
+)

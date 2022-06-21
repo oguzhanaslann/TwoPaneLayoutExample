@@ -18,5 +18,9 @@
         android:id="@+id/treeDetailFragment"
         android:name="com.oguzhanaslann.twopanelayoutexample.TreeDetailFragment"
         android:label="fragment_tree_detail"
-        tools:layout="@layout/fragment_tree_detail" />
+        tools:layout="@layout/fragment_tree_detail" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
 </navigation>
