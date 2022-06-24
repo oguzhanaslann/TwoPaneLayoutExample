@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -16,6 +17,9 @@ import com.oguzhanaslann.twopanelayoutexample.databinding.FragmentTreeListBindin
 import com.oguzhanaslann.twopanelayoutexample.databinding.ItemTreeBinding
 
 class TreeListFragment : Fragment(R.layout.fragment_tree_list) {
+
+    private val treeViewModel: TreeViewModel by activityViewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentTreeListBinding.bind(view)
@@ -29,6 +33,7 @@ class TreeListFragment : Fragment(R.layout.fragment_tree_list) {
             treeRv.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TreeAdapter {
+                    treeViewModel.setTree(it)
                     slidingPane.openPane()
                 }.also {
                     it.submitList(
