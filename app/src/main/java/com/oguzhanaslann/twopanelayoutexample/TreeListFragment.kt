@@ -11,16 +11,16 @@ class TreeListFragment : Fragment(R.layout.fragment_tree_list) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentTreeListBinding.bind(view)
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            SportsListOnBackPressedCallback(binding.slidingPane)
-        )
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner,
+//            SportsListOnBackPressedCallback(binding.slidingPane)
+//        )
 
         binding.apply {
             treeRv.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TreeAdapter {
-                    slidingPane.openPane()
+//                    slidingPane.openPane()
                 }.also {
                     it.submitList(
                         listOf(
